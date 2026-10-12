@@ -31,6 +31,15 @@ if errorlevel 1 (
   exit /b 1
 )
 
+findstr /i /c:"replace_with_your_api_key" ".env" >nul
+if not errorlevel 1 (
+  echo OPENAI_API_KEY is still the example placeholder.
+  echo Open .env, add your own valid API key, save the file, then run start.bat again.
+  start "" notepad.exe "%CD%\.env"
+  pause
+  exit /b 1
+)
+
 echo Starting ASSEMBLE Live Agent...
 node server.js
 pause

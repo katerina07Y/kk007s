@@ -34,7 +34,8 @@ function loadLocalEnv() {
 loadLocalEnv();
 
 const MODEL = process.env.OPENAI_MODEL || 'gpt-6-astra';
-const API_KEY = process.env.OPENAI_API_KEY || '';
+const configuredApiKey = (process.env.OPENAI_API_KEY || '').trim();
+const API_KEY = /^(?:replace_with_your_api_key|your_openai_api_key)$/i.test(configuredApiKey) ? '' : configuredApiKey;
 const OPENAI_BASE = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(/\/$/, '');
 const profiles = JSON.parse(fs.readFileSync(path.join(ROOT, 'candidates.json'), 'utf8'));
 

@@ -45,7 +45,7 @@ Open http://127.0.0.1:4173.
 
 ## Public deployment (Render)
 
-This repository includes a Render Blueprint in `render.yaml` and a `package.json` start command. Push the project to a GitHub repository (it can remain private), then create a Blueprint in Render and connect that repository. The Blueprint creates a public web service and uses `/api/status` as its health check.
+This repository includes a Render Blueprint in `render.yaml` and a `package.json` start command. Push the project to a GitHub repository (it can remain private), then create a Blueprint in Render and connect that repository. The Blueprint creates a public web service and uses `/api/status` as its health check. A Chinese step-by-step guide is available in `部署说明.md`.
 
 Before deploying, add a valid `OPENAI_API_KEY` in the Render service's Environment settings. Never put the key in `render.yaml`, source files, or a public repository. Keep `OPENAI_MODEL` set to a model your API account can use. Render serves web services on a public `onrender.com` subdomain and terminates HTTPS at its load balancer.
 
@@ -54,12 +54,12 @@ The included Blueprint uses Render's free web-service plan. Free services can sp
 ## Safety and privacy notes
 
 - The API key is read by the local server and is never returned to the browser.
-- The server binds to `127.0.0.1` by default. It is intended for local prototyping and should not be exposed directly to the public internet.
+- The server binds to `127.0.0.1` for local use and `0.0.0.0` in production so Render can route traffic to it. Do not expose the Node server directly to the public internet outside a trusted hosting platform or reverse proxy.
 - Your project text, profile details, resume, and any attached document you analyze are sent to the OpenAI API when live analysis is enabled. Do not use confidential, proprietary, or sensitive information unless you have reviewed the applicable terms and data-handling requirements.
 - For PDF/Office files, the server asks the API to delete its uploaded file after the response; cleanup is best-effort. This is not a guarantee about all API logs or retention policies.
 - The demo's 12 candidate profiles are fictional. Model ranking improves the matching rationale, but does not make these real people or verify their availability, interest, qualifications, or contact details.
 - The Agent never sends messages, contacts candidates, or executes external actions. Action plans remain under the user's control.
-- This prototype has no authentication, user accounts, persistent profile storage, telemetry, or production operations monitoring. Profile data stays in the visitor's browser session; API requests are public when deployed.
+- This prototype has no authentication, user accounts, persistent profile storage, telemetry, or production operations monitoring. Profile data stays in the visitor's browser session; the deployed site and API endpoints are publicly reachable.
 - Public service requests have per-IP rate limits and a per-instance concurrency cap. These reduce accidental and basic abusive usage but are not a replacement for account-level API spending limits or stronger identity controls at larger scale.
 
 ## Troubleshooting
