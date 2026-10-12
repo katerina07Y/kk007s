@@ -1,0 +1,12 @@
+{
+  "name": "assemble-live-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ASSEMBLE project analysis web app",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}

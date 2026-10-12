@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: assemble-live-agent
+    runtime: node
+    plan: free
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/status
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY
+        value: "1"
+      - key: OPENAI_MODEL
+        value: gpt-6-astra
+      - key: OPENAI_API_KEY
+        sync: false
