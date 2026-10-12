@@ -31,6 +31,22 @@ if errorlevel 1 (
   exit /b 1
 )
 
+if not exist "node_modules\pg\package.json" (
+  where npm >nul 2>nul
+  if errorlevel 1 (
+    echo npm was not found. Please reinstall Node.js 22 LTS with npm enabled.
+    pause
+    exit /b 1
+  )
+  echo Installing the PostgreSQL client required by ASSEMBLE...
+  call npm install --omit=dev
+  if errorlevel 1 (
+    echo Could not install dependencies. Check your internet connection and try again.
+    pause
+    exit /b 1
+  )
+)
+
 findstr /i /c:"replace_with_your_api_key" ".env" >nul
 if not errorlevel 1 (
   echo OPENAI_API_KEY is still the example placeholder.
