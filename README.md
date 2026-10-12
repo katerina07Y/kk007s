@@ -49,7 +49,7 @@ This repository includes a Render Blueprint in `render.yaml` and a `package.json
 
 Before deploying, add a valid `OPENAI_API_KEY` in the Render service's Environment settings. Never put the key in `render.yaml`, source files, or a public repository. Keep `OPENAI_MODEL` set to a model your API account can use. Render serves web services on a public `onrender.com` subdomain and terminates HTTPS at its load balancer.
 
-The included Blueprint uses Render's free web-service plan. Free services can spin down when idle, and free instance hours are limited; the first request after idle may take longer. OpenAI API usage is billed separately to the API account. Review Render's [free service limits](https://render.com/docs/free) and [environment variable guidance](https://render.com/docs/configure-environment-variables).
+The included Blueprint creates only a Render free web service; it does **not** create a Render database or other paid resource. To enable cross-device accounts and saved profiles, supply `DATABASE_URL` from a PostgreSQL provider on a free plan. Neon currently documents a free Postgres plan; check its [current plan limits](https://neon.com/pricing) before use. Render's [free web-service limits](https://render.com/docs/free) include spin-down after inactivity and usage caps. If a payment method is attached, excess Render bandwidth/build usage can be billable; without one, Render says it suspends affected free services instead. OpenAI API usage remains a separate usage-based cost, so set a limit in the API billing project or leave `OPENAI_API_KEY` unset to avoid model calls.
 
 ## Safety and privacy notes
 
@@ -59,7 +59,8 @@ The included Blueprint uses Render's free web-service plan. Free services can sp
 - For PDF/Office files, the server asks the API to delete its uploaded file after the response; cleanup is best-effort. This is not a guarantee about all API logs or retention policies.
 - The demo's 12 candidate profiles are fictional. Model ranking improves the matching rationale, but does not make these real people or verify their availability, interest, qualifications, or contact details.
 - The Agent never sends messages, contacts candidates, or executes external actions. Action plans remain under the user's control.
-- This prototype has no authentication, user accounts, persistent profile storage, telemetry, or production operations monitoring. Profile data stays in the visitor's browser session; the deployed site and API endpoints are publicly reachable.
+- When `DATABASE_URL` is configured, the app enables per-account authentication, cloud profile/resume storage, saved projects, and authenticated analysis endpoints. Without it, account sync is disabled and personal profile data is only kept in the current browser session.
+- Cloud database storage is persistent but belongs to the configured provider and is subject to that provider's free-tier quotas, pause/retention rules, and backup policy. Keep independent backups of important resumes and project records.
 - Public service requests have per-IP rate limits and a per-instance concurrency cap. These reduce accidental and basic abusive usage but are not a replacement for account-level API spending limits or stronger identity controls at larger scale.
 
 ## Troubleshooting
